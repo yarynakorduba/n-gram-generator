@@ -72,7 +72,8 @@ class Realizer():
         for word in words:
             if word in punctuations:
                 punct = self.punctuations[self.lang][word]
-                if realized_words[-1] == ' ':
+
+                if len(realized_words) and realized_words[-1] == ' ':
                     realized_words = realized_words[:-1] + punct.tokenize()
                 else:
                     realized_words += punct.tokenize()

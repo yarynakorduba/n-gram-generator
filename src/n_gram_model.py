@@ -15,10 +15,12 @@ from scipy import stats
 from utils import get_none_tuple, get_none_list
 from realizer import Realizer
 
+import csv
+
 class NgramModel:
     
-    def __init__(self, filepath, lang='english'):
-        self.text = self._load_file(filepath)
+    def __init__(self, txt, lang='english'):
+        self.text = txt # self._load_file(filepath)
         self.lang = lang
         self.sentences = sent_tokenize(self.text, language=self.lang)
     
@@ -79,6 +81,19 @@ class NgramModel:
         return realizer.realize(gen_tokens)
 
 if __name__ == '__main__':
-    ngramModel = NgramModel('../data/bible_en.txt', lang='english')
-    text = ngramModel.gen_text(4, nb_sents=3)
-    print(text)
+    # ngramModel = NgramModel('./data/texts.csv', lang='english')
+    # text = ngramModel.gen_text(2, nb_sents=50)
+    # print(text)
+
+    count = 0
+    with open('./data/texts.csv', newline='') as csvfile:
+        csvreader = csv.reader(csvfile, delimiter=',')
+        with open("my_file.txt", mode="a") as f:
+            f.write("ngram_text,real_text\n")
+            for row in csvreader:
+                if len(row[1]) == 0 or row[1] == "text":
+                    continue
+                ngramModel = NgramModel(row[1], lang='english')
+                text = ngramModel.gen_text(5, nb_sents=50)
+                f.write(f'"{text}","{row[1]}"\n')
+                count += 1
