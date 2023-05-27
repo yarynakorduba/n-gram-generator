@@ -6,6 +6,7 @@ Created on 7 nov. 2015
 
 import codecs
 import numpy as np
+import random
 
 from nltk.tokenize import sent_tokenize, word_tokenize
 from nltk.probability import ConditionalFreqDist
@@ -81,19 +82,18 @@ class NgramModel:
         return realizer.realize(gen_tokens)
 
 if __name__ == '__main__':
-    # ngramModel = NgramModel('./data/texts.csv', lang='english')
-    # text = ngramModel.gen_text(2, nb_sents=50)
-    # print(text)
-
     count = 0
     with open('./data/texts.csv', newline='') as csvfile:
         csvreader = csv.reader(csvfile, delimiter=',')
         with open("my_file.txt", mode="a") as f:
             f.write("ngram_text,real_text\n")
             for row in csvreader:
+                # if count >=1:
+                #     break
                 if len(row[1]) == 0 or row[1] == "text":
                     continue
                 ngramModel = NgramModel(row[1], lang='english')
-                text = ngramModel.gen_text(5, nb_sents=50)
+                text = ngramModel.gen_text(5, nb_sents=random.randint(50, 100))
+                # f.write(f'"{text}"\n')
                 f.write(f'"{text}","{row[1]}"\n')
                 count += 1

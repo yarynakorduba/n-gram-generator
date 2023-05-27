@@ -57,7 +57,12 @@ class Realizer():
                                 '[': Punctuation(True, '[', None),
                                 ']': Punctuation(None, ']', True),
                                 '``': Punctuation(True, '"', None),
-                                "''": Punctuation(None, '"', True)
+                                "''": Punctuation(None, '"', True),
+                                '\'': Punctuation(None, '\'', None),
+                                '‘': Punctuation(None, '\'', None),
+                                '’': Punctuation(None, '\'', None),
+                                '”': Punctuation(None, '"', True),
+                                '“': Punctuation(True, '"', None),
                                 }
                     }
     
