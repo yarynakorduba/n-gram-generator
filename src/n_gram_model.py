@@ -84,7 +84,7 @@ if __name__ == '__main__':
     with open('./data/texts.csv', newline='') as csvfile:
         csvreader = csv.reader(csvfile, delimiter=',')
         for row in csvreader:
-            if count >=5000:
+            if count >= 5000:
                 break
             sentences = sent_tokenize(row[1], 'english')
             if len(row[1]) == 0 or row[1] == "text" or len(sentences) < 20:
@@ -94,5 +94,5 @@ if __name__ == '__main__':
             text = ngramModel.gen_text(5, nb_sents=random.randrange(50,100)) #
             df = pd.concat([df, pd.DataFrame([{ "article": text, "labels": 0 }])], ignore_index=True)
             count += 1
-    df.to_csv('ngram_data_result.csv', index=False)
+    df.to_csv('./generated_ngrams/ngram_data_result.csv', index=False)
     print(count)
