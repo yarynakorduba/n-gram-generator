@@ -1,9 +1,3 @@
-'''
-Created on 7 nov. 2015
-
-@author: Antonin Duroy
-'''
-
 import codecs
 import numpy as np
 import random
@@ -17,13 +11,17 @@ from utils import get_none_tuple, get_none_list
 from realizer import Realizer
 
 import csv
+import pandas as pd
 
+
+article = []
+df = pd.DataFrame()
 class NgramModel:
     
-    def __init__(self, txt, lang='english'):
+    def __init__(self, txt, sentences, lang='english'):
         self.text = txt # self._load_file(filepath)
         self.lang = lang
-        self.sentences = sent_tokenize(self.text, language=self.lang)
+        self.sentences = sentences
     
     def _load_file(self, filepath):
         with codecs.open(filepath, 'r', encoding='utf-8') as f:
@@ -85,15 +83,16 @@ if __name__ == '__main__':
     count = 0
     with open('./data/texts.csv', newline='') as csvfile:
         csvreader = csv.reader(csvfile, delimiter=',')
-        with open("my_file.txt", mode="a") as f:
-            f.write("ngram_text,real_text\n")
-            for row in csvreader:
-                # if count >=1:
-                #     break
-                if len(row[1]) == 0 or row[1] == "text":
-                    continue
-                ngramModel = NgramModel(row[1], lang='english')
-                text = ngramModel.gen_text(5, nb_sents=random.randint(50, 100))
-                # f.write(f'"{text}"\n')
-                f.write(f'"{text}","{row[1]}"\n')
-                count += 1
+        for row in csvreader:
+            if count >=5000:
+                break
+            sentences = sent_tokenize(row[1], 'english')
+            if len(row[1]) == 0 or row[1] == "text" or len(sentences) < 20:
+                print('Skipped')
+                continue
+            ngramModel = NgramModel(row[1], sentences, lang='english')
+            text = ngramModel.gen_text(5, nb_sents=random.randrange(50,100)) #
+            df = pd.concat([df, pd.DataFrame([{ "article": text, "labels": 0 }])], ignore_index=True)
+            count += 1
+    df.to_csv('ngram_data_result.csv', index=False)
+    print(count)
