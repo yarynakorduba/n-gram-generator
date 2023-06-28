@@ -1,3 +1,7 @@
+###
+Disclaimer: This repository was forked from https://github.com/aduroy/n-gram-generator
+and slightly adjusted to generate the n-gram texts for multiple source texts in a loop.
+
 # n-gram Text Generator
 n-gram models are widely used in computational linguistics, such as text generation. In this field, an n-gram model
 is a probabilistic model for predicting words given the previous ones, using Markov chains.

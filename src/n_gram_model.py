@@ -81,7 +81,7 @@ class NgramModel:
 
 if __name__ == '__main__':
     count = 0
-    with open('./data/texts.csv', newline='') as csvfile:
+    with open('./data/input_texts.csv', newline='') as csvfile:
         csvreader = csv.reader(csvfile, delimiter=',')
         for row in csvreader:
             if count >= 5000:
@@ -91,7 +91,7 @@ if __name__ == '__main__':
                 print('Skipped')
                 continue
             ngramModel = NgramModel(row[1], sentences, lang='english')
-            text = ngramModel.gen_text(5, nb_sents=random.randrange(50,100)) #
+            text = ngramModel.gen_text(5, nb_sents=random.randrange(50,100))
             df = pd.concat([df, pd.DataFrame([{ "article": text, "labels": 0 }])], ignore_index=True)
             count += 1
     df.to_csv('./generated_ngrams/ngram_data_result.csv', index=False)
